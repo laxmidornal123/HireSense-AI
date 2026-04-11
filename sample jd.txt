@@ -1,0 +1,88 @@
+    We are looking for a SQL Developer with strong database knowledge.
+
+    Required Skills:
+    - SQL
+    - MySQL or PostgreSQL
+    - Database design
+    - Writing complex queries
+
+    Preferred Skills:
+    - Python
+    - Data analysis
+
+    Responsibilities:
+    - Develop and optimize SQL queries
+    - Manage database performance
+    - Work with large datasets
+
+
+We are hiring a Python Developer for backend development.
+
+Required Skills:
+- Python
+- Django or Flask
+- REST APIs
+- SQL
+
+Preferred Skills:
+- AWS
+- Docker
+
+Responsibilities:
+- Build scalable web applications
+- Develop APIs
+- Maintain backend systems
+
+
+Looking for a Machine Learning Engineer to build AI models.
+
+Required Skills:
+- Python
+- Machine Learning
+- Deep Learning
+- NLP
+
+Preferred Skills:
+- TensorFlow or PyTorch
+- Data Science
+
+Responsibilities:
+- Build predictive models
+- Analyze data
+- Deploy ML solutions
+
+
+We are seeking a Full Stack Developer.
+
+Required Skills:
+- HTML, CSS, JavaScript
+- React
+- Node.js
+- MongoDB or SQL
+
+Preferred Skills:
+- AWS
+- Docker
+
+Responsibilities:
+- Develop frontend and backend
+- Integrate APIs
+- Maintain applications
+
+
+We are hiring a Data Analyst.
+
+Required Skills:
+- SQL
+- Excel
+- Data Visualization
+- Python
+
+Preferred Skills:
+- Power BI or Tableau
+
+Responsibilities:
+- Analyze business data
+- Generate reports
+- Provide insights
+
