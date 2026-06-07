@@ -1,158 +1,438 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-    <title>Result</title>
+    <title>HireSense AI - Candidate Report</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        body {
-            background: #eef2f7;
-        }
+<style>
+body{
+    background:linear-gradient(
+        to bottom,
+        #f8fafc,
+        #e2e8f0
+    );
+}
+.navbar{
+    background:#0f172a;
+}
 
-        .navbar {
-            background: #0d1b2a;
-        }
+.navbar-brand{
+    color:white !important;
+    font-weight:700;
+    font-size:24px;
+}
 
-        .navbar-brand {
-            color: white;
-            font-weight: bold;
-        }
+.report-card{
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
 
-        .nav-link {
-            color: white !important;
-        }
+.profile-card{
+    background:rgba(255,255,255,.65);
+    backdrop-filter:blur(12px);
+    border-radius:20px;
+    padding:25px;
+    margin-bottom:25px;
+    border:1px solid rgba(255,255,255,.3);
+}
+.stat-card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
 
-        .main-card {
-            border-radius: 15px;
-            box-shadow: 0px 8px 25px rgba(0,0,0,0.15);
-        }
+.skill-chip{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:20px;
+    margin:5px;
+    color:white;
+    font-size:14px;
+}
 
-        .status-box {
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 22px;
-            font-weight: bold;
-        }
+.matched{
+    background:#16a34a;
+}
 
-        .strong { background: #d4edda; color: #155724; }
-        .moderate { background: #fff3cd; color: #856404; }
-        .low { background: #f8d7da; color: #721c24; }
+.missing{
+    background:#dc2626;
+}
 
-        .section {
-            margin-top: 20px;
-        }
+.allskills{
+    background:#2563eb;
+}
 
-        .skill-badge {
-            margin: 5px;
-            padding: 8px 12px;
-            font-size: 14px;
-            border-radius: 20px;
-        }
+.feedback-box{
+    background:#f8fafc;
+    border-left:5px solid #2563eb;
+    padding:20px;
+    border-radius:10px;
+}
 
-        .feedback-box {
-            background: #e7f3ff;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 500;
-        }
+.action-btn{
+    min-width:180px;
+    margin:5px;
+}
+.skill-chip{
+display:inline-block;
+padding:10px 18px;
+border-radius:25px;
+margin:6px;
+color:white;
+font-size:14px;
+font-weight:600;
+transition:all .3s ease;
+}
 
-        .btn-custom {
-            border-radius: 10px;
-        }
-    </style>
+.skill-chip:hover{
+transform:translateY(-3px);
+box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+.stat-card:hover{
+transform:translateY(-5px);
+transition:.3s;
+}
+
+.report-card{
+background:white;
+border-radius:20px;
+padding:35px;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+.avatar-circle{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:32px;
+    font-weight:bold;
+    box-shadow:0 8px 20px rgba(37,99,235,.3);
+}
+.score-circle{
+    width:180px;
+    height:180px;
+    margin:auto;
+    border-radius:50%;
+    border:12px solid #22c55e;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:white;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+
+.score-circle h2{
+    font-weight:700;
+    margin:0;
+}
+
+.score-circle small{
+    color:#64748b;
+}
+</style>
+
+
 </head>
 
 <body>
 
-<!-- 🔷 NAVBAR -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar">
     <div class="container">
-        <span class="navbar-brand">📊 Resume Ranker</span>
-
-        <div class="ms-auto">
-            <a href="/dashboard" class="nav-link d-inline">🏠 Dashboard</a>
-            <a href="/history" class="nav-link d-inline">📂 History</a>
-            <a href="/logout" class="nav-link d-inline">🚪 Logout</a>
-        </div>
+        <span class="navbar-brand">
+            HireSense AI
+        </span>
     </div>
 </nav>
 
-<!-- 🔷 CONTENT -->
 <div class="container mt-5">
 
-    <div class="card main-card p-4 mx-auto" style="max-width: 700px;">
+<div class="report-card">
 
-        <!-- STATUS -->
-        <div class="text-center mb-3">
-            <div class="status-box 
-                {% if status == 'Strong Match' %}strong
-                {% elif status == 'Moderate Match' %}moderate
-                {% else %}low
-                {% endif %}
-            ">
-                {{ status }}
+
+
+<div class="text-center mb-4">
+
+<h2 class="fw-bold">
+    Candidate Analysis Report
+</h2>
+
+<p class="text-muted">
+    AI-Powered Resume Screening & ATS Evaluation
+</p>
+    {% if status == "Strong Match" %}
+        <span class="badge bg-success fs-6">
+            Strong Match
+        </span>
+
+    {% elif status == "Moderate Match" %}
+        <span class="badge bg-warning text-dark fs-6">
+            Moderate Match
+        </span>
+
+    {% else %}
+        <span class="badge bg-danger fs-6">
+            Low Match
+        </span>
+    {% endif %}
+
+</div>
+
+<div class="row align-items-center">
+
+    <div class="col-md-7">
+
+        <div class="d-flex align-items-center">
+
+            <div class="avatar-circle">
+                {{ candidate_name[0]|upper if candidate_name else 'L' }}
             </div>
-        </div>
 
-        <!-- SKILLS -->
-        <div class="section">
-            <h5>🧠 Extracted Skills</h5>
-            {% for s in skills %}
-                <span class="badge bg-secondary skill-badge">{{ s }}</span>
-            {% endfor %}
-        </div>
-
-        <!-- MATCHED -->
-        <div class="section">
-            <h5 class="text-success">✅ Matched Skills</h5>
-            {% if matched %}
-                {% for s in matched %}
-                    <span class="badge bg-success skill-badge">{{ s }}</span>
-                {% endfor %}
-            {% else %}
-                <p class="text-muted">No matched skills</p>
-            {% endif %}
-        </div>
-
-        <!-- MISSING -->
-        <div class="section">
-            <h5 class="text-danger">❌ Missing Skills</h5>
-            {% if missing %}
-                {% for s in missing %}
-                    <span class="badge bg-danger skill-badge">{{ s }}</span>
-                {% endfor %}
-            {% else %}
-                <p class="text-muted">No missing skills</p>
-            {% endif %}
-        </div>
-
-        <!-- FEEDBACK -->
-        <div class="section">
-            <h5>💡 Feedback</h5>
-            <div class="feedback-box">
-                {{ feedback }}
+            <div class="ms-3">
+                <h4 class="mb-1">{{ candidate_name }}</h4>
+                <small class="text-muted">{{ email }}</small>
             </div>
+
         </div>
 
-        <!-- BUTTONS -->
-        <div class="text-center mt-4">
-            <a href="/dashboard" class="btn btn-primary btn-custom me-2">
-                ⬅ Dashboard
-            </a>
+       <h5 class="text-primary">
+    <i class="bi bi-stars"></i>
+    Recruiter Summary
+</h5>
 
-            <a href="/history" class="btn btn-dark btn-custom">
-                📂 History
-            </a>
-            <a href="/download_pdf/{{ id }}" class="btn btn-success">
-    📄 Download Report
-</a>
+<hr>
+
+<p>
+    <strong>Candidate ID:</strong>
+    HR-{{ id }}
+</p>
+
+<p>
+    <strong>Role:</strong>
+    {{ role }}
+</p>
+
+<p>
+    <strong>Status:</strong>
+
+    {% if status=="Strong Match" %}
+        <span class="badge bg-success">
+            Strong Match
+        </span>
+    {% elif status=="Moderate Match" %}
+        <span class="badge bg-warning text-dark">
+            Moderate Match
+        </span>
+    {% else %}
+        <span class="badge bg-danger">
+            Low Match
+        </span>
+    {% endif %}
+</p>
+
+<p class="mb-0">
+    <strong>Recommendation:</strong>
+    Shortlist Candidate
+</p>
+    </div>
+
+    <div class="col-md-5">
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <h5 class="text-primary">
+                <i class="bi bi-award-fill"></i>
+                Hiring Decision
+            </h5>
+
+            <hr>
+
+            {% if score >= 75 %}
+
+                <span class="badge bg-success fs-6">
+                    Recommended for Interview
+                </span>
+
+                <p class="mt-3 mb-0">
+                    Candidate meets the required skill criteria and is suitable for the next recruitment stage.
+                </p>
+
+            {% elif score >= 50 %}
+
+                <span class="badge bg-warning text-dark fs-6">
+                    Needs Review
+                </span>
+
+                <p class="mt-3 mb-0">
+                    Candidate partially matches the job requirements.
+                </p>
+
+            {% else %}
+
+                <span class="badge bg-danger fs-6">
+                    Not Recommended
+                </span>
+
+                <p class="mt-3 mb-0">
+                    Candidate does not currently meet the required criteria.
+                </p>
+
+            {% endif %}
+
         </div>
+    </div>
+
+</div>
+</div>
+<h5>Resume Match Score</h5>
+
+
+<div class="row mb-4">
+
+    <div class="col-md-4">
+
+    <div class="score-circle">
+
+        <h2>{{ score }}%</h2>
+
+        <small>ATS Score</small>
 
     </div>
 
 </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <h3>{{ matched|length }}</h3>
+            <p>Matched Skills</p>
+        </div>
+    </div>
 
+    <div class="col-md-4">
+        <div class="stat-card">
+            <h3>{{ missing|length }}</h3>
+            <p>Missing Skills</p>
+        </div>
+    </div>
+
+</div>
+<div class="mt-4">
+
+
+<!-- Extracted Skills -->
+<h4 class="text-primary mb-3">
+    <i class="bi bi-brain"></i>
+    Extracted Skills ({{ skills|length }})
+</h4>
+
+{% for skill in skills %}
+    <span class="skill-chip allskills">
+        {{ skill }}
+    </span>
+{% endfor %}
+
+<hr class="my-4">
+
+<!-- Matched Skills -->
+<h4 class="text-success mb-3">
+    <i class="bi bi-check-circle-fill"></i>
+    Matched Skills ({{ matched|length }})
+</h4>
+
+{% if matched %}
+    {% for skill in matched %}
+        <span class="skill-chip matched">
+            {{ skill }}
+        </span>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">No matched skills found.</p>
+{% endif %}
+
+<hr class="my-4">
+
+<!-- Missing Skills -->
+<h4 class="text-danger mb-3">
+    <i class="bi bi-x-circle-fill"></i>
+    Missing Skills ({{ missing|length }})
+</h4>
+
+{% if missing %}
+    {% for skill in missing %}
+        <span class="skill-chip missing">
+            {{ skill }}
+        </span>
+    {% endfor %}
+{% else %}
+    <p class="text-success fw-bold">
+        <i class="bi bi-check-circle-fill"></i>
+        No missing skills detected.
+    </p>
+{% endif %}
+
+
+</div>
+
+<hr>
+
+
+<h5>
+    <i class="bi bi-robot text-primary"></i>
+    AI Recommendation
+</h5>
+<div class="alert alert-success shadow-sm">
+
+    <i class="bi bi-robot"></i>
+
+    <strong>AI Recommendation:</strong>
+
+    {{ feedback }}
+
+</div>
+<div class="text-center mt-5">
+
+  <a href="/dashboard" class="btn btn-primary">
+    <i class="bi bi-speedometer2"></i> Dashboard
+</a>
+
+<a href="/history" class="btn btn-dark">
+    <i class="bi bi-clock-history"></i> History
+</a>
+
+<a href="/download_pdf/{{ id }}" class="btn btn-success">
+    <i class="bi bi-download"></i> Download Report
+</a>
+
+<a href="/send_mail/{{ id }}" class="btn btn-info text-white">
+    <i class="bi bi-envelope-fill"></i> Send Mail
+</a>
+</div>
+
+
+</div>
+
+</div>
+<footer class="mt-5 py-4 text-center text-muted">
+
+    <hr>
+
+    <p>
+        <i class="bi bi-cpu-fill text-primary"></i>
+        Powered by HireSense AI • Resume Ranking System
+    </p>
+
+</footer>
 </body>
 </html>

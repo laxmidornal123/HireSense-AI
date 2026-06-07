@@ -4,7 +4,8 @@ import io
 from config import *
 from database import db
 from models import User, Resume
-
+from flask import flash,redirect
+from datetime import datetime
 from utils.emailer import send_selected_email, send_rejection_email
 from utils.extractor import extract_text
 from utils.validator import is_valid_resume
@@ -13,8 +14,16 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 
 from ai.parser import extract_details   # ✅ keep this
-
+from flask_mail import Mail, Message
 app = Flask(__name__)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+EMAIL_USER = os.environ.get("EMAIL_USER")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
+mail = Mail(app)
+
 app.config["SECRET_KEY"] = SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -46,14 +55,29 @@ def simple_similarity(jd, resume):
 # ---------------- REGISTER ----------------
 @app.route("/", methods=["GET", "POST"])
 def register():
+
     if request.method == "POST":
+
+        name = request.form["name"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        existing_user = User.query.filter_by(email=email).first()
+
+        if existing_user:
+            flash("Email already registered!", "danger")
+            return render_template("register.html")
+
         user = User(
-            name=request.form["name"],
-            email=request.form["email"],
-            password=request.form["password"]
+            name=name,
+            email=email,
+            password=password
         )
+
         db.session.add(user)
         db.session.commit()
+
+        flash("Registration Successful! Please Login.", "success")
         return redirect("/login")
 
     return render_template("register.html")
@@ -62,19 +86,30 @@ def register():
 # ---------------- LOGIN ----------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
     if request.method == "POST":
+
+        email = request.form["email"]
+        password = request.form["password"]
+
         user = User.query.filter_by(
-            email=request.form["email"],
-            password=request.form["password"]
+            email=email,
+            password=password
         ).first()
 
         if user:
+
             session["user_id"] = user.id
-            session["email"] = user.email
+            session["user_name"] = user.name
+
+            flash("Login Successful!", "success")
+
             return redirect("/dashboard")
 
-    return render_template("login.html")
+        else:
+            flash("Invalid Email or Password!", "danger")
 
+    return render_template("login.html")
 
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
@@ -112,6 +147,7 @@ def history():
 
 @app.route("/view/<int:id>")
 def view(id):
+
     if "user_id" not in session:
         return redirect("/login")
 
@@ -120,20 +156,24 @@ def view(id):
     if not resume:
         return "No record found"
 
-    # Convert skills string → list
     skills = resume.skills.split(",") if resume.skills else []
 
     return render_template(
-        "result.html",
-        status=resume.status,
-        id=resume.id,
-        skills=skills,
-        matched=skills,   # simple (since no stored match)
-        missing=[],
-        feedback=resume.feedback if resume.feedback else "No feedback available"
-    )
+    "result.html",
+    candidate_name=session.get("user_name"),
+    id=resume.id,
+    status=resume.status,
+    score=round(resume.score * 100, 2),
+    email=resume.email,
+    role=resume.role,
+    skills=skills,
+    matched=skills,
+    missing=[],
+    feedback=resume.feedback
+)
 @app.route("/download_pdf/<int:id>")
 def download_pdf(id):
+
     if "user_id" not in session:
         return redirect("/login")
 
@@ -143,66 +183,175 @@ def download_pdf(id):
         return "Report not found"
 
     buffer = io.BytesIO()
+
     doc = SimpleDocTemplate(buffer)
 
     styles = getSampleStyleSheet()
+
     content = []
 
-    # 🔥 TITLE
-    content.append(Paragraph("<b>Resume Analysis Report</b>", styles["Title"]))
+    
+    content.append(Spacer(1, 15))
+    # HEADER
+    content.append(
+    Paragraph(
+        "<b>HireSense AI - Candidate Analysis Report</b>",
+        styles["Title"]
+    )
+)
+
     content.append(Spacer(1, 15))
 
-    # 🔥 ROLE
-    role = getattr(resume, "role", "Software Developer")
-    content.append(Paragraph(f"<b>Role:</b> {role}", styles["Normal"]))
-    content.append(Spacer(1, 10))
+# CANDIDATE INFORMATION
+    content.append(
+    Paragraph(
+        "<b>Candidate Information</b>",
+        styles["Heading2"]
+    )
+)
 
-    # 🔥 STATUS (highlight)
-    status_color = "green" if resume.status == "Strong Match" else "orange" if resume.status == "Moderate Match" else "red"
-
-    content.append(Paragraph(
-        f"<b>Status:</b> <font color='{status_color}'>{resume.status}</font>",
+    content.append(
+    Paragraph(
+        f"<b>Candidate ID:</b> HR-{resume.id}",
         styles["Normal"]
-    ))
+    )
+)
+
+    content.append(
+    Paragraph(
+        f"<b>Email:</b> {resume.email}",
+        styles["Normal"]
+    )
+)
+
+    content.append(
+    Paragraph(
+        f"<b>Role:</b> {resume.role}",
+        styles["Normal"]
+    )
+)
+
+    content.append(
+    Paragraph(
+        f"<b>Status:</b> {resume.status}",
+        styles["Normal"]
+    )
+)
+
     content.append(Spacer(1, 15))
 
-    # 🔥 SKILLS
-    skills = resume.skills.split(",") if hasattr(resume, "skills") and resume.skills else []
+# ATS ANALYSIS
+    score = round(resume.score * 100, 2)
 
-    content.append(Paragraph("<b>Skills:</b>", styles["Heading2"]))
-    for s in skills:
-        content.append(Paragraph(f"• {s}", styles["Normal"]))
+    content.append(
+    Paragraph(
+        "<b>ATS Analysis</b>",
+        styles["Heading2"]
+    )
+)
+
+    content.append(
+    Paragraph(
+        f"<b>ATS Score:</b> {score}%",
+        styles["Normal"]
+    )
+)
 
     content.append(Spacer(1, 15))
 
-    # 🔥 FEEDBACK
-    feedback = getattr(resume, "feedback", "No feedback available")
+# SKILLS
+    skills = resume.skills.split(",") if resume.skills else []
 
-    content.append(Paragraph("<b>Feedback:</b>", styles["Heading2"]))
-    content.append(Paragraph(feedback, styles["Normal"]))
+    content.append(
+    Paragraph(
+        "<b>Extracted Skills</b>",
+        styles["Heading2"]
+    )
+)
+
+    for skill in skills:
+        content.append(
+        Paragraph(
+            f"• {skill.strip()}",
+            styles["Normal"]
+        )
+    )
+
+    content.append(Spacer(1, 15))
+
+# HIRING DECISION
+    if score >= 75:
+        decision = "Recommended for Interview"
+    elif score >= 50:
+        decision = "Needs Review"
+    else:
+        decision = "Not Recommended"
+
+    content.append(
+    Paragraph(
+        "<b>Hiring Decision</b>",
+        styles["Heading2"]
+    )
+)
+
+    content.append(
+    Paragraph(
+        decision,
+        styles["Normal"]
+    )
+)
+
+    content.append(Spacer(1, 15))
+
+# AI RECOMMENDATION
+    content.append(
+    Paragraph(
+        "<b>AI Recommendation</b>",
+        styles["Heading2"]
+    )
+)
+
+    content.append(
+    Paragraph(
+        resume.feedback,
+        styles["Normal"]
+    )
+)
 
     content.append(Spacer(1, 20))
 
-    # 🔥 FOOTER
-    content.append(Paragraph(
-        "<i>Generated by Resume Ranker System</i>",
+# FOOTER
+    content.append(
+    Paragraph(
+        f"Generated On: {datetime.now().strftime('%d-%m-%Y %I:%M %p')}",
         styles["Normal"]
-    ))
+    )
+)
 
-    # BUILD PDF
+    content.append(
+    Paragraph(
+        "<i>Generated by HireSense AI</i>",
+        styles["Normal"]
+    )
+)
     doc.build(content)
+
     buffer.seek(0)
 
     return send_file(
         buffer,
         as_attachment=True,
-        download_name="Resume_Report.pdf",
+        download_name="HireSense_AI_Report.pdf",
         mimetype="application/pdf"
     )
 # ---------------- DASHBOARD ----------------
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
+
+    print("Dashboard Session:", session)
+
     if "user_id" not in session:
+        flash("Please Login First!", "warning")
         return redirect("/login")
 
     if request.method == "POST":
@@ -213,7 +362,8 @@ def dashboard():
         file = request.files["resume"]
 
         if not file.filename.endswith((".pdf", ".docx")):
-            return "❌ Invalid file format"
+            flash("Invalid File format. Upload PDF or DOCX Only","danger")
+            return redirect("/dashboard")
 
         path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
         file.save(path)
@@ -221,7 +371,8 @@ def dashboard():
         text = extract_text(path)
 
         if not is_valid_resume(text):
-            return "❌ Not a valid resume"
+            flash("Not a valid resume. Upload PDF or DOCX Only","danger")
+            return redirect("/dashboard")
 
         # ✅ SIMPLE SIMILARITY (NO BERT)
         similarity_score = simple_similarity(job_desc, text)
@@ -272,30 +423,87 @@ def dashboard():
 
         # 🔥 Save to DB
         res = Resume(
-            user_id=session["user_id"],
-            score=final_score,
-            status=status,
-            filename=file.filename,   # ✅ FIX
-            role=role,
-            skills=",".join(resume_skills),   # ✅ convert list to string
-            feedback=feedback
-        )
+    user_id=session["user_id"],
+    score=final_score,
+    status=status,
+    filename=file.filename,
+    role=role,
+    skills=",".join(resume_skills),
+    feedback=feedback,
+    email=resume_email
+)
         db.session.add(res)
         db.session.commit()
 
         return render_template(
-            "result.html",
-            id=res.id,
-            status=status,
-            skills=resume_skills,
-            matched=matched,
-            missing=missing,
-            feedback=feedback
-        )
+    "result.html",
+    candidate_name=session.get("user_name"),
+    id=res.id,
+    status=status,
+    score=round(final_score * 100, 2),
+    email=resume_email,
+    role=role,
+    skills=resume_skills,
+    matched=matched,
+    missing=missing,
+    feedback=feedback
+)
 
     return render_template("dashboard.html")
+@app.route("/send_mail/<int:id>")
+def send_mail(id):
 
+    resume = Resume.query.get(id)
 
+    if not resume:
+        flash("Resume not found!", "danger")
+        return redirect("/history")
+
+    print("Resume ID:", id)
+    print("Resume Email:", resume.email)
+
+    try:
+
+        msg = Message(
+            subject="Congratulations! Your Resume Has Been Shortlisted",
+            sender=app.config['MAIL_USERNAME'],
+            recipients=[resume.email]
+        )
+
+        msg.body = f"""
+Dear Candidate,
+
+Congratulations!
+
+We are pleased to inform you that your resume has been shortlisted for further consideration.
+
+Position: {resume.role}
+
+Status: {resume.status}
+
+Your profile demonstrates strong alignment with the requirements of the role.
+
+Our recruitment team will contact you regarding the next steps.
+
+Thank you for your interest in joining our organization.
+
+Best Regards,
+HireSense AI Recruitment Team
+"""
+
+        mail.send(msg)
+
+        print("MAIL SENT SUCCESSFULLY")
+
+        flash("Email Sent Successfully!", "success")
+
+    except Exception as e:
+
+        print("MAIL ERROR:", e)
+
+        flash(f"Mail Error: {e}", "danger")
+
+    return redirect(f"/view/{id}")
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,80 +1,283 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Register</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireSense AI | Register</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
         body {
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            height: 100vh;
+            min-height: 100vh;
+            display: flex;
+            background: #f8fafc;
+        }
+
+        /* LEFT SIDE */
+
+        .left-panel {
+            width: 45%;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a, #7c3aed);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            color: #c4b5fd;
+        }
+
+        .tagline {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .desc {
+            color: #dbeafe;
+            font-size: 18px;
+            margin-bottom: 35px;
+        }
+
+        .feature {
+            margin-bottom: 18px;
+            font-size: 17px;
+        }
+
+        .feature i {
+            color: #22c55e;
+            margin-right: 10px;
+        }
+
+        /* RIGHT SIDE */
+
+        .right-panel {
+            width: 55%;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .card {
-            border-radius: 15px;
-            padding: 30px;
-            width: 350px;
-            box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
+        .register-card {
+            width: 450px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: #ede9fe;
+            color: #6d28d9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            font-size: 32px;
         }
 
         .title {
             text-align: center;
-            font-weight: bold;
-            font-size: 24px;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            font-weight: 700;
+            color: #1e293b;
         }
 
-        .btn-custom {
-            background: #007bff;
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            height: 52px;
+            border-radius: 12px;
+        }
+
+        .btn-register {
+            height: 52px;
+            border: none;
+            border-radius: 12px;
             color: white;
-            border-radius: 10px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #8b5cf6, #4f46e5);
         }
 
-        .btn-custom:hover {
-            background: #0056b3;
+        .btn-register:hover {
+            color: white;
+            opacity: 0.95;
         }
 
-        .link {
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
             text-decoration: none;
-            font-size: 14px;
+            font-weight: 600;
+        }
+
+        @media(max-width:900px) {
+
+            .left-panel {
+                display: none;
+            }
+
+            .right-panel {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .register-card {
+                width: 100%;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="card bg-white">
+    <!-- LEFT PANEL -->
 
-    <div class="title">🚀 Create Account</div>
+    <div class="left-panel">
 
-    <form method="POST">
+        <div class="logo">
+            <i class="fas fa-file-alt"></i>
+            HireSense AI
+        </div>
 
-        <input type="text" name="name" class="form-control mb-3"
-               placeholder="Full Name" required>
+        <div class="tagline">
+            Find The Best Talent Faster.
+        </div>
 
-        <input type="email" name="email" class="form-control mb-3"
-               placeholder="Email Address" required>
+        <div class="desc">
+            Create an account and start using our AI-powered
+            Resume Screening and Candidate Ranking System.
+        </div>
 
-        <input type="password" name="password" class="form-control mb-3"
-               placeholder="Password" required>
+        <div class="feature">
+            <i class="fas fa-check-circle"></i>
+            AI Resume Analysis
+        </div>
 
-        <button type="submit" class="btn btn-custom w-100">
-            Register
-        </button>
+        <div class="feature">
+            <i class="fas fa-check-circle"></i>
+            Candidate Ranking
+        </div>
 
-    </form>
+        <div class="feature">
+            <i class="fas fa-check-circle"></i>
+            Skill Matching
+        </div>
 
-    <div class="text-center mt-3">
-        <span>Already have an account?</span><br>
-        <a href="/login" class="link">Login here</a>
+        <div class="feature">
+            <i class="fas fa-check-circle"></i>
+            PDF & DOCX Resume Support
+        </div>
+
+        <div class="feature">
+            <i class="fas fa-check-circle"></i>
+            Instant Insights & Reports
+        </div>
+
     </div>
 
-</div>
+    <!-- RIGHT PANEL -->
 
+    <div class="right-panel">
+
+        <div class="register-card">
+
+            <div class="icon-circle">
+                <i class="fas fa-user-plus"></i>
+            </div>
+
+            <h2 class="title">Create Account</h2>
+
+            <p class="subtitle">
+                Register to access HireSense AI
+            </p>
+             {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+
+            <div class="alert alert-{{ category }} alert-dismissible fade show">
+
+                {{ message }}
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+            <form method="POST">
+
+                <input type="text"
+                    name="name"
+                    class="form-control mb-3"
+                    placeholder="Full Name"
+                    required>
+
+                <input type="email"
+                    name="email"
+                    class="form-control mb-3"
+                    placeholder="Email Address"
+                    required>
+
+                <input type="password"
+                    name="password"
+                    class="form-control mb-3"
+                    placeholder="Password"
+                    required>
+
+                <button type="submit"
+                    class="btn btn-register w-100">
+                    Create Account
+                </button>
+
+            </form>
+
+            <div class="login-link">
+                Already have an account?
+                <a href="/login">Login Here</a>
+            </div>
+
+        </div>
+
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

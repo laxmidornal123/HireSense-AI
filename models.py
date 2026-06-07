@@ -16,4 +16,5 @@ class Resume(db.Model):
     role = db.Column(db.String(100))       # ✅ NEW
     created_at = db.Column(db.DateTime, default=db.func.now())  # ✅ NEW
     skills = db.Column(db.Text)    # ✅ NEW (store skills as string)
+    email = db.Column(db.String(120))
     feedback = db.Column(db.Text)  

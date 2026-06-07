@@ -1,77 +1,255 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>HireSense AI | Login</title>
 
-    <style>
-        body {
-            background: linear-gradient(to right, #667eea, #764ba2);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .card {
-            border-radius: 15px;
-            padding: 30px;
-            width: 350px;
-            box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
-        }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-        .title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
+<style>
 
-        .btn-custom {
-            background: #28a745;
-            color: white;
-            border-radius: 10px;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
 
-        .btn-custom:hover {
-            background: #1e7e34;
-        }
+body{
+    min-height:100vh;
+    display:flex;
+    background:#f8fafc;
+}
 
-        .link {
-            text-decoration: none;
-            font-size: 14px;
-        }
-    </style>
+.left-panel{
+    width:45%;
+    background:linear-gradient(135deg,#1e1b4b,#4f46e5);
+    color:white;
+    padding:60px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.logo{
+    font-size:38px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.logo i{
+    color:#a78bfa;
+}
+
+.tagline{
+    font-size:42px;
+    font-weight:700;
+    line-height:1.3;
+    margin-bottom:20px;
+}
+
+.desc{
+    color:#d1d5db;
+    font-size:18px;
+    margin-bottom:40px;
+}
+
+.feature{
+    margin-bottom:20px;
+    font-size:17px;
+}
+
+.feature i{
+    color:#22c55e;
+    margin-right:10px;
+}
+
+.right-panel{
+    width:55%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-card{
+    width:450px;
+    background:white;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+.icon-circle{
+    width:80px;
+    height:80px;
+    background:#ede9fe;
+    color:#6d28d9;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+    font-size:32px;
+}
+
+.title{
+    text-align:center;
+    margin-top:15px;
+    font-weight:700;
+    color:#1e293b;
+}
+
+.subtitle{
+    text-align:center;
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+.form-control{
+    height:50px;
+    border-radius:12px;
+}
+
+.btn-login{
+    background:linear-gradient(90deg,#8b5cf6,#4f46e5);
+    color:white;
+    border:none;
+    height:50px;
+    border-radius:12px;
+    font-weight:600;
+}
+
+.btn-login:hover{
+    color:white;
+}
+
+.register{
+    text-align:center;
+    margin-top:20px;
+}
+
+.register a{
+    text-decoration:none;
+    font-weight:600;
+}
+
+@media(max-width:900px){
+
+    .left-panel{
+        display:none;
+    }
+
+    .right-panel{
+        width:100%;
+    }
+}
+</style>
+
 </head>
 
 <body>
 
-<div class="card bg-white">
+<div class="left-panel">
 
-    <div class="title">🔐 Login to Your Account</div>
+    <div class="logo">
+        <i class="fas fa-file-alt"></i> HireSense AI
+    </div>
 
-    <form method="POST">
+    <div class="tagline">
+        Find the Best Talent,<br>
+        Faster.
+    </div>
 
-        <input type="email" name="email" class="form-control mb-3"
-               placeholder="Email Address" required>
+    <div class="desc">
+        AI-powered resume screening and candidate ranking platform.
+    </div>
 
-        <input type="password" name="password" class="form-control mb-3"
-               placeholder="Password" required>
+    <div class="feature">
+        <i class="fas fa-check-circle"></i>
+        Resume Parsing
+    </div>
 
-        <button type="submit" class="btn btn-custom w-100">
-            Login
-        </button>
+    <div class="feature">
+        <i class="fas fa-check-circle"></i>
+        AI Candidate Ranking
+    </div>
 
-    </form>
+    <div class="feature">
+        <i class="fas fa-check-circle"></i>
+        PDF & DOCX Support
+    </div>
 
-    <div class="text-center mt-3">
-        <span>Don't have an account?</span><br>
-        <a href="/" class="link">Register here</a>
+    <div class="feature">
+        <i class="fas fa-check-circle"></i>
+        Instant Insights
     </div>
 
 </div>
 
+<div class="right-panel">
+
+    <div class="login-card">
+
+        <div class="icon-circle">
+            <i class="fas fa-lock"></i>
+        </div>
+
+        <h2 class="title">Welcome Back</h2>
+
+        <p class="subtitle">
+            Login to continue to HireSense AI
+        </p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+
+        <div class="alert alert-{{ category }} alert-dismissible fade show">
+
+            {{ message }}
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+        <form method="POST">
+
+            <input type="email"
+                   class="form-control mb-3"
+                   name="email"
+                   placeholder="Email Address"
+                   required>
+
+            <input type="password"
+                   class="form-control mb-3"
+                   name="password"
+                   placeholder="Password"
+                   required>
+
+            <button class="btn btn-login w-100">
+                Login
+            </button>
+
+        </form>
+
+        <div class="register">
+            Don't have an account?
+            <a href="/">Register Here</a>
+        </div>
+
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
