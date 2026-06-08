@@ -427,7 +427,7 @@ def dashboard():
         else:
             status = "Low Match"
             feedback = "Needs improvement in required skills"
-
+         
         # 🔥 EMAIL
        # if resume_email:
         #    if status == "Strong Match":
@@ -436,32 +436,34 @@ def dashboard():
             #     send_rejection_email(resume_email, round(final_score * 100, 2), role)
 
         # 🔥 Save to DB
+                # 🔥 Save to DB
         res = Resume(
-    user_id=session["user_id"],
-    score=final_score,
-    status=status,
-    filename=file.filename,
-    role=role,
-    skills=",".join(resume_skills),
-    feedback=feedback,
-    email=resume_email
-)
+            user_id=session["user_id"],
+            score=final_score,
+            status=status,
+            filename=file.filename,
+            role=role,
+            skills=",".join(resume_skills),
+            feedback=feedback,
+            email=resume_email
+        )
+
         db.session.add(res)
         db.session.commit()
 
         return render_template(
-    "result.html",
-    candidate_name=session.get("user_name"),
-    id=res.id,
-    status=status,
-    score=round(final_score * 100, 2),
-    email=resume_email,
-    role=role,
-    skills=resume_skills,
-    matched=matched,
-    missing=missing,
-    feedback=feedback
-)
+            "result.html",
+            candidate_name=session.get("user_name"),
+            id=res.id,
+            status=status,
+            score=round(final_score * 100, 2),
+            email=resume_email,
+            role=role,
+            skills=resume_skills,
+            matched=matched,
+            missing=missing,
+            feedback=feedback
+        )
 
     return render_template("dashboard.html")
 @app.route("/send_mail/<int:id>")
