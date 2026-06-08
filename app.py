@@ -392,8 +392,11 @@ def dashboard():
             skill_score += 0.3
 
         # 🔥 Final score (internal only)
+# Final score
         final_score = (0.5 * similarity_score) + (0.5 * skill_score)
 
+        # Prevent score from exceeding 100%
+        final_score = min(final_score, 1.0)
         # 🔥 STATUS + FEEDBACK
         if final_score > 0.6:
             status = "Strong Match"
