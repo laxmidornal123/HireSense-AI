@@ -393,7 +393,11 @@ def dashboard():
 
         # 🔥 Final score (internal only)
 # Final score
+                # 🔥 Final score
         final_score = (0.5 * similarity_score) + (0.5 * skill_score)
+
+        # Never allow score above 100%
+        final_score = min(final_score, 1.0)
 
         # Prevent score from exceeding 100%
         final_score = min(final_score, 1.0)
