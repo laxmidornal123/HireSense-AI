@@ -23,6 +23,9 @@ EMAIL_USER = os.environ.get("EMAIL_USER")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 app.config['MAIL_USERNAME'] = EMAIL_USER
 app.config['MAIL_PASSWORD'] = EMAIL_PASSWORD
+app.config['MAIL_DEFAULT_SENDER'] = EMAIL_USER
+print("EMAIL_USER =", EMAIL_USER)
+print("EMAIL_PASSWORD EXISTS =", EMAIL_PASSWORD is not None)
 
 mail = Mail(app)
 
