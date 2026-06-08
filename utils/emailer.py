@@ -48,19 +48,36 @@ HR Team
 
 # 🔧 COMMON FUNCTION
 def send_email(to_email, subject, body):
+
+    print("FROM_EMAIL =", FROM_EMAIL)
+    print("PASSWORD EXISTS =", bool(PASSWORD))
+    print("TO_EMAIL =", to_email)
+
     msg = MIMEText(body)
     msg["Subject"] = subject
     msg["From"] = FROM_EMAIL
     msg["To"] = to_email
 
     try:
+        print("STEP 1: Connecting SMTP")
+
         server = smtplib.SMTP("smtp.gmail.com", 587)
+
+        print("STEP 2: Starting TLS")
+
         server.starttls()
+
+        print("STEP 3: Login")
+
         server.login(FROM_EMAIL, PASSWORD)
+
+        print("STEP 4: Sending")
+
         server.sendmail(FROM_EMAIL, to_email, msg.as_string())
+
+        print("STEP 5: Success")
+
         server.quit()
 
-        print(f"✅ Email sent to {to_email}")
-
     except Exception as e:
-        print("❌ Email error:", e)
+        print("EMAIL ERROR:", str(e))
