@@ -19,13 +19,19 @@ app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
 EMAIL_USER = os.environ.get("EMAIL_USER")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+print("EMAIL_USER =", EMAIL_USER)
+print("EMAIL_PASSWORD EXISTS =", bool(EMAIL_PASSWORD))
 app.config['MAIL_USERNAME'] = EMAIL_USER
 app.config['MAIL_PASSWORD'] = EMAIL_PASSWORD
 app.config['MAIL_DEFAULT_SENDER'] = EMAIL_USER
-print("EMAIL_USER =", EMAIL_USER)
-print("EMAIL_PASSWORD EXISTS =", EMAIL_PASSWORD is not None)
+print("EMAIL_USER =", os.environ.get("EMAIL_USER"))
+print("EMAIL_PASSWORD EXISTS =", bool(os.environ.get("EMAIL_PASSWORD")))
+app.config['MAIL_MAX_EMAILS'] = None
+app.config['MAIL_ASCII_ATTACHMENTS'] = False
 
 mail = Mail(app)
 
