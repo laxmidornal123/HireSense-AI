@@ -429,11 +429,11 @@ def dashboard():
             feedback = "Needs improvement in required skills"
 
         # 🔥 EMAIL
-        if resume_email:
-            if status == "Strong Match":
-                send_selected_email(resume_email, round(final_score * 100, 2), role)
-            elif status == "Low Match":
-                send_rejection_email(resume_email, round(final_score * 100, 2), role)
+       # if resume_email:
+        #    if status == "Strong Match":
+         #       send_selected_email(resume_email, round(final_score * 100, 2), role)
+            # elif status == "Low Match":
+            #     send_rejection_email(resume_email, round(final_score * 100, 2), role)
 
         # 🔥 Save to DB
         res = Resume(
