@@ -466,60 +466,7 @@ def dashboard():
     return render_template("dashboard.html")
 @app.route("/send_mail/<int:id>")
 def send_mail(id):
-
     return f"Send Mail Route Working - Resume ID {id}"
-    if not resume:
-        flash("Resume not found!", "danger")
-        return redirect("/history")
-
-    print("Resume ID:", id)
-    print("Resume Email:", resume.email)
-
-    try:
-
-        msg = Message(
-            subject="Congratulations! Your Resume Has Been Shortlisted",
-            sender=app.config['MAIL_USERNAME'],
-            recipients=[resume.email]
-        )
-
-        msg.body = f"""
-Dear Candidate,
-
-Congratulations!
-
-We are pleased to inform you that your resume has been shortlisted for further consideration.
-
-Position: {resume.role}
-
-Status: {resume.status}
-
-Your profile demonstrates strong alignment with the requirements of the role.
-
-Our recruitment team will contact you regarding the next steps.
-
-Thank you for your interest in joining our organization.
-
-Best Regards,
-HireSense AI Recruitment Team
-"""
-
-        print("MAIL CONFIG:")
-        print(app.config['MAIL_SERVER'])
-        print(app.config['MAIL_PORT'])
-        print(app.config['MAIL_USERNAME'])
-
-        print("MAIL SENT SUCCESSFULLY")
-
-        flash("Email Sent Successfully!", "success")
-
-    except Exception as e:
-
-        print("MAIL ERROR:", e)
-
-        flash(f"Mail Error: {e}", "danger")
-
-    return redirect(f"/view/{id}")
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True)
