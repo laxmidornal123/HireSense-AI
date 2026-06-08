@@ -467,8 +467,7 @@ def dashboard():
 @app.route("/send_mail/<int:id>")
 def send_mail(id):
 
-    resume = Resume.query.get(id)
-
+    return f"Send Mail Route Working - Resume ID {id}"
     if not resume:
         flash("Resume not found!", "danger")
         return redirect("/history")
