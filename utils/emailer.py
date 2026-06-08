@@ -52,6 +52,7 @@ HireSense AI Recruitment Team
 
 
 def send_email(to_email, subject, body):
+    print("USING KEY:", BREVO_API_KEY[:15])
 
     url = "https://api.brevo.com/v3/smtp/email"
 
