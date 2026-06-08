@@ -21,6 +21,8 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 EMAIL_USER = os.environ.get("EMAIL_USER")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+app.config['MAIL_USERNAME'] = EMAIL_USER
+app.config['MAIL_PASSWORD'] = EMAIL_PASSWORD
 
 mail = Mail(app)
 
