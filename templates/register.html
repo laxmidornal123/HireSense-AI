@@ -75,11 +75,12 @@
         /* RIGHT SIDE */
 
         .right-panel {
-            width: 55%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    width: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
         .register-card {
             width: 450px;
@@ -159,6 +160,64 @@
                 width: 100%;
             }
         }
+/* ===== EXTRA MOBILE RESPONSIVE ===== */
+
+@media(max-width:768px){
+
+    body{
+        display:block;
+    }
+
+    .register-card{
+        max-width:450px;
+        margin:auto;
+        padding:25px;
+    }
+
+    .title{
+        font-size:28px;
+    }
+
+    .subtitle{
+        font-size:14px;
+    }
+}
+
+@media(max-width:480px){
+
+    .register-card{
+        padding:20px;
+        border-radius:15px;
+    }
+
+    .icon-circle{
+        width:65px;
+        height:65px;
+        font-size:24px;
+    }
+
+    .title{
+        font-size:24px;
+    }
+
+    .form-control{
+        height:46px;
+        font-size:14px;
+    }
+
+    .btn-register{
+        height:46px;
+        font-size:14px;
+    }
+
+    .login-link{
+        font-size:14px;
+    }
+
+    .alert{
+        font-size:13px;
+    }
+}
     </style>
 </head>
 

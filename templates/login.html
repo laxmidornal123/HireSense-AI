@@ -68,14 +68,13 @@ body{
     color:#22c55e;
     margin-right:10px;
 }
-
 .right-panel{
     width:55%;
     display:flex;
     justify-content:center;
     align-items:center;
+    padding:20px;
 }
-
 .login-card{
     width:450px;
     background:white;
@@ -146,6 +145,66 @@ body{
 
     .right-panel{
         width:100%;
+    }
+}
+/* ===== MOBILE RESPONSIVE ===== */
+
+@media (max-width:768px){
+
+    body{
+        display:block;
+    }
+
+    .right-panel{
+        width:100%;
+        min-height:100vh;
+        padding:20px;
+    }
+
+    .login-card{
+        width:100%;
+        max-width:450px;
+        padding:25px;
+    }
+
+    .title{
+        font-size:28px;
+    }
+
+    .subtitle{
+        font-size:14px;
+    }
+}
+
+@media (max-width:480px){
+
+    .login-card{
+        padding:20px;
+        border-radius:15px;
+    }
+
+    .icon-circle{
+        width:65px;
+        height:65px;
+        font-size:24px;
+    }
+
+    .title{
+        font-size:24px;
+    }
+
+    .form-control{
+        height:45px;
+        font-size:14px;
+    }
+
+    .btn-login{
+        height:45px;
+        font-size:14px;
+    }
+
+    .register{
+        font-size:14px;
     }
 }
 </style>

@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -18,6 +19,43 @@
         .nav-link {
             color: white !important;
         }
+        @media (max-width:768px){
+
+    .navbar .container{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .ms-auto{
+        margin-top:10px;
+    }
+
+    .nav-link{
+        display:block !important;
+        margin:5px 0;
+    }
+
+    h3{
+        font-size:22px;
+    }
+}
+
+@media (max-width:480px){
+
+    .container{
+        padding-left:10px;
+        padding-right:10px;
+    }
+
+    .table{
+        font-size:13px;
+    }
+
+    .btn{
+        width:100%;
+        margin-top:5px;
+    }
+}
     </style>
 </head>
 
@@ -40,8 +78,8 @@
 
     <h3 class="mb-4 text-center">📂 Resume History</h3>
 
-    <table class="table table-bordered table-hover text-center">
-
+<div class="table-responsive">
+<table class="table table-bordered table-hover text-center">
         <thead class="table-dark">
             <tr>
                 <th>Resume</th>
@@ -70,7 +108,7 @@
 
                 <td>{{ r.created_at }}</td>
                 <td>
-                   <a href="/view/{{ r.id }}" class="btn btn-info btn-sm">
+                   <a href="/view/{{ r.id }}" class="btn btn-info btn-sm w-100">
                    👁 View
                    </a>
                 </td>
@@ -80,6 +118,7 @@
         </tbody>
 
     </table>
+</div>
 
     <!-- 🔙 BACK BUTTON -->
     <div class="text-center mt-4">
