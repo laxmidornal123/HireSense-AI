@@ -1,83 +1,83 @@
-
-import smtplib
-from email.mime.text import MIMEText
 import os
+import requests
 
-FROM_EMAIL = os.environ.get("EMAIL_USER")
-PASSWORD = os.environ.get("EMAIL_PASSWORD")
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
 
-# ✅ UPDATED FUNCTION (3 PARAMETERS)
+
 def send_selected_email(to_email, score, role):
-    subject = f"🎉 Shortlisted for {role}"
+
+    subject = "Congratulations! Your Application Has Been Shortlisted"
 
     body = f"""
-Hello Candidate,
+Dear Candidate,
 
-Congratulations 🎉
+Congratulations!
 
-You have been shortlisted for the position of {role}.
+We are pleased to inform you that your application has been successfully shortlisted for the position of {role}.
 
-Our team will contact you soon.
+Application Details:
+Position: {role}
+Resume Match Score: {score}%
+Status: Strong Match
+
+Our recruitment team will contact you regarding the next steps.
 
 Best Regards,
-HR Team
+HireSense AI Recruitment Team
 """
 
     send_email(to_email, subject, body)
 
 
-# ❌ UPDATED FUNCTION (3 PARAMETERS)
 def send_rejection_email(to_email, score, role):
-    subject = f"Application Update - {role}"
+
+    subject = "Application Status Update"
 
     body = f"""
-Hello Candidate,
+Dear Candidate,
 
-Thank you for applying for the {role} role.
+Thank you for your interest in the position of {role}.
 
-After evaluation, we regret to inform you that you were not shortlisted.
+After careful evaluation, we regret to inform you that your application has not been selected for the next stage.
 
-We encourage you to improve and apply again.
+We encourage you to apply again in the future.
 
 Best Regards,
-HR Team
+HireSense AI Recruitment Team
 """
 
     send_email(to_email, subject, body)
 
 
-# 🔧 COMMON FUNCTION
 def send_email(to_email, subject, body):
 
-    print("FROM_EMAIL =", FROM_EMAIL)
-    print("PASSWORD EXISTS =", bool(PASSWORD))
-    print("TO_EMAIL =", to_email)
+    url = "https://api.brevo.com/v3/smtp/email"
 
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = FROM_EMAIL
-    msg["To"] = to_email
+    headers = {
+        "accept": "application/json",
+        "api-key": BREVO_API_KEY,
+        "content-type": "application/json"
+    }
 
-    try:
-        print("STEP 1: Connecting SMTP")
+    payload = {
+        "sender": {
+            "name": "HireSense AI",
+            "email": "laxmidornal12@gmail.com"
+        },
+        "to": [
+            {
+                "email": to_email
+            }
+        ],
+        "subject": subject,
+        "htmlContent": f"<html><body><pre>{body}</pre></body></html>"
+    }
 
-        server = smtplib.SMTP("smtp.gmail.com", 587)
+    response = requests.post(
+        url,
+        json=payload,
+        headers=headers
+    )
 
-        print("STEP 2: Starting TLS")
-
-        server.starttls()
-
-        print("STEP 3: Login")
-
-        server.login(FROM_EMAIL, PASSWORD)
-
-        print("STEP 4: Sending")
-
-        server.sendmail(FROM_EMAIL, to_email, msg.as_string())
-
-        print("STEP 5: Success")
-
-        server.quit()
-
-    except Exception as e:
-        print("EMAIL ERROR:", str(e))
+    print("BREVO STATUS:", response.status_code)
+    print("BREVO RESPONSE:", response.text)

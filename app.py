@@ -14,30 +14,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 
 from ai.parser import extract_details   # ✅ keep this
-from flask_mail import Mail, Message
 app = Flask(__name__)
-
-EMAIL_USER = os.environ.get("EMAIL_USER")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
-
-print("EMAIL_USER =", EMAIL_USER)
-print("EMAIL_PASSWORD EXISTS =", bool(EMAIL_PASSWORD))
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-
-app.config['MAIL_USERNAME'] = EMAIL_USER
-app.config['MAIL_PASSWORD'] = EMAIL_PASSWORD
-app.config['MAIL_DEFAULT_SENDER'] = EMAIL_USER
-print("EMAIL_USER =", EMAIL_USER)
-print("EMAIL_PASSWORD EXISTS =", bool(EMAIL_PASSWORD))
-app.config['MAIL_USERNAME'] = EMAIL_USER
-app.config['MAIL_PASSWORD'] = EMAIL_PASSWORD
-app.config['MAIL_DEFAULT_SENDER'] = EMAIL_USER
-mail = Mail(app)
-
 app.config["SECRET_KEY"] = SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -429,11 +406,11 @@ def dashboard():
             feedback = "Needs improvement in required skills"
          
         # 🔥 EMAIL
-       # if resume_email:
-        #    if status == "Strong Match":
-         #       send_selected_email(resume_email, round(final_score * 100, 2), role)
-            # elif status == "Low Match":
-            #     send_rejection_email(resume_email, round(final_score * 100, 2), role)
+        if resume_email:
+            if status == "Strong Match":
+               send_selected_email(resume_email, round(final_score * 100, 2), role)
+            elif status == "Low Match":
+                send_rejection_email(resume_email, round(final_score * 100, 2), role)
 
         # 🔥 Save to DB
                 # 🔥 Save to DB
