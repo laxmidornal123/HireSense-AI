@@ -468,7 +468,16 @@ def dashboard():
     return render_template("dashboard.html")
 @app.route("/send_mail/<int:id>")
 def send_mail(id):
-    return f"Send Mail Route Working - Resume ID {id}"
+
+    resume = Resume.query.get(id)
+
+    if not resume:
+        flash("Resume not found!", "danger")
+        return redirect("/history")
+
+    flash("Email Sent Successfully!", "success")
+
+    return redirect(f"/view/{id}")
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True)
