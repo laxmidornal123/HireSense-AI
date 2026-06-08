@@ -2,7 +2,8 @@ import os
 import requests
 
 BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
-
+print("BREVO KEY EXISTS:", bool(BREVO_API_KEY))
+print("BREVO KEY PREFIX:", BREVO_API_KEY[:8] if BREVO_API_KEY else "NONE")
 
 def send_selected_email(to_email, score, role):
 
