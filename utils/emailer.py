@@ -1,6 +1,6 @@
 import os
 import requests
-BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "").strip()
 
 print("BREVO KEY EXISTS:", bool(BREVO_API_KEY))
 
