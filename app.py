@@ -16,14 +16,21 @@ from reportlab.lib.styles import getSampleStyleSheet
 from ai.parser import extract_details   # ✅ keep this
 from flask_mail import Mail, Message
 app = Flask(__name__)
+
+EMAIL_USER = os.environ.get("EMAIL_USER")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
 print("EMAIL_USER =", EMAIL_USER)
 print("EMAIL_PASSWORD EXISTS =", bool(EMAIL_PASSWORD))
+
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-EMAIL_USER = os.environ.get("EMAIL_USER")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
+app.config['MAIL_USERNAME'] = EMAIL_USER
+app.config['MAIL_PASSWORD'] = EMAIL_PASSWORD
+app.config['MAIL_DEFAULT_SENDER'] = EMAIL_USER
 print("EMAIL_USER =", EMAIL_USER)
 print("EMAIL_PASSWORD EXISTS =", bool(EMAIL_PASSWORD))
 app.config['MAIL_USERNAME'] = EMAIL_USER
