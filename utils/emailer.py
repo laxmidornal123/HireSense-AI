@@ -5,6 +5,7 @@ import os
 
 FROM_EMAIL = os.environ.get("EMAIL_USER")
 PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
 # ✅ UPDATED FUNCTION (3 PARAMETERS)
 def send_selected_email(to_email, score, role):
     subject = f"🎉 Shortlisted for {role}"

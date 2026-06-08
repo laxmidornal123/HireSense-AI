@@ -475,6 +475,12 @@ def send_mail(id):
         flash("Resume not found!", "danger")
         return redirect("/history")
 
+    send_selected_email(
+        resume.email,
+        round(resume.score * 100, 2),
+        resume.role
+    )
+
     flash("Email Sent Successfully!", "success")
 
     return redirect(f"/view/{id}")
