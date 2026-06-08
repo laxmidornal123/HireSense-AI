@@ -1,10 +1,11 @@
 import os
 import requests
-
 BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
-print("BREVO KEY EXISTS:", bool(BREVO_API_KEY))
-print("BREVO KEY PREFIX:", BREVO_API_KEY[:8] if BREVO_API_KEY else "NONE")
 
+print("BREVO KEY EXISTS:", bool(BREVO_API_KEY))
+
+if BREVO_API_KEY:
+    print("BREVO KEY STARTS WITH:", BREVO_API_KEY[:10])
 def send_selected_email(to_email, score, role):
 
     subject = "Congratulations! Your Application Has Been Shortlisted"
